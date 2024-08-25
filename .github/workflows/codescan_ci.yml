@@ -1,0 +1,51 @@
+name: CODESCAN_CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  guard-ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install build
+          pip install -r requirements.txt
+          pip install -r requirements_ci.txt
+
+      - name: Enforce proper code formatting with black
+        run: |
+            black --check core/ core_tests/
+
+      - name: Enforce proper code formatting with isort
+        run: |
+          isort --profile=black --check-only core/ core_tests/
+
+      - name: Check linting with pylint
+        run: |
+          pylint core/
+
+      - name: Run tests with unittest
+        run: |
+          python -m unittest discover -s core_tests -p "*.py"
+
+      - name: Build the project
+        run: |
+          python -m build

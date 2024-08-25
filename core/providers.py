@@ -1,12 +1,8 @@
 """
-This module defines classes represent the available AI providers currently supported for code scanning.
+This module defines classes represent the available AI providers
+currently supported for code scanning.
 """
 
-import os
-
-import google.generativeai as genai
-import openai
-import requests
 
 class BaseAIProvider:
     """Abstract base class for defining AI providers."""
@@ -19,4 +15,6 @@ class BaseAIProvider:
 
     def scan_code(self, code_summary):
         """Scans the provided code summary for potential security vulnerabilities."""
-        raise NotImplementedError("Each AI provider must implement the `scan_code` method.")
+        raise NotImplementedError(
+            "Each AI provider must implement the `scan_code` method."
+        )
