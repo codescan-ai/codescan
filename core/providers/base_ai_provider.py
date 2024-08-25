@@ -1,6 +1,6 @@
 """
-This module defines classes represent the available AI providers
-currently supported for code scanning.
+This module defines an abstract class to represent an AI provider.
+Currently supported AI providers will implement this class.
 """
 
 
