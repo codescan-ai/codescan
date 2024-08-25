@@ -1,0 +1,6 @@
+[FORMAT]
+max-line-length=120
+max-args=8
+
+[MESSAGES CONTROL]
+disable=R0903
