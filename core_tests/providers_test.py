@@ -6,12 +6,14 @@ from core.providers import BaseAIProvider
 """
 Unit tests for the AIProviders module.
 """
+
+
 class TestAIProviders(unittest.TestCase):
-    def baseProvider__test__init(self):
+    def test__baseProvider__init(self):
         with self.assertRaises(NotImplementedError):
             BaseAIProvider()
 
-    def newProvider__test__scanCodeNotImplemented(self):
+    def test__newProvider__scanCodeNotImplemented(self):
         class NewProvider(BaseAIProvider):
             pass
 
