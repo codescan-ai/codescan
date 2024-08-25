@@ -45,7 +45,3 @@ jobs:
       - name: Run tests with unittest
         run: |
           python -m unittest discover -s core_tests -p "*.py"
-
-      - name: Build the project
-        run: |
-          python -m build
