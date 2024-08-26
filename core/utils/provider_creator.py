@@ -2,12 +2,14 @@
 This module provides util methods used for initializing an AIProvider based on the user args.
 """
 
+from core.providers.custom_ai_provider import CustomAIProvider
 from core.providers.google_gemini_ai_provider import GoogleGeminiAIProvider
 from core.providers.open_ai_provider import OpenAIProvider
 
 PROVIDERS = {
     "openai": OpenAIProvider,
     "gemini": GoogleGeminiAIProvider,
+    "custom": CustomAIProvider,
 }
 
 DEFAULT_MODELS = {

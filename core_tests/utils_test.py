@@ -147,3 +147,18 @@ class TestUtils(unittest.TestCase):
         mock_getenv.return_value = "test_gemini_api_key"
         init_provider("gemini", None)
         mock_getenv.assert_called_once_with("GEMINI_API_KEY")
+
+    @patch("core.utils.provider_creator.CustomAIProvider")
+    def test_initialize_client_custom(self, mock_custom_client):
+        init_provider(
+            "custom",
+            "custom-model",
+            "http://localhost",
+            5000,
+            "custom-token",
+            "/api/v1/scan",
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
