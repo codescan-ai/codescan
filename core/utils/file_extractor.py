@@ -92,21 +92,3 @@ def get_changed_files_in_repo(directory):
         logging.error("Error getting changed files: %s", e)
     return changed_files
 
-
-# def fetch_changed_files_in_pr(repo, pr_number, github_token):
-#     """
-#     Fetches the list of changed files from a GitHub PR.
-#     """
-#     if not github_token:
-#         logging.error("GitHub token is required for scanning PR changes.")
-#         raise ValueError("GitHub token is required for scanning PR changes.")
-#     return get_changed_files_in_pr(repo, pr_number, github_token)
-
-# def fetch_changed_files_from_repo(directory):
-#     """
-#     Fetches the list of changed files from a local Git repository.
-#     """
-#     if not is_git_repo(directory):
-#         logging.error("Directory is not a valid Git repository: %s", directory)
-#         raise ValueError("Directory is not a valid Git repository.")
-#     return get_changed_files(directory)
