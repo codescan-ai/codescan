@@ -91,4 +91,3 @@ def get_changed_files_in_repo(directory):
     except subprocess.CalledProcessError as e:
         logging.error("Error getting changed files: %s", e)
     return changed_files
-
