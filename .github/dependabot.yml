@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions-minor:
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      include: scope
+      prefix: "chore"
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions-minor:
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      include: scope
+      prefix: "chore"
