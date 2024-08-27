@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codescanai"
+version = "0.1.0"
+description = "A CLI tool that scans your codebases for security vulnerabilities powered by powerful AI models."
+readme = "README.md"
+authors = [{ name = "Caleb Abhulimhen", email = "calebabhulimhen@gmail.com" }]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+keywords = ["code scanning",  "cli", "github action", "security", "vulnerabilities check"]
+dependencies = [
+    "openai>=1.40.6",
+    "PyGithub",
+    "requests",
+    "google-generativeai",
+    "ipython"
+]
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["pylint", "black", "isort"]
+
+[project.urls]
+Homepage = "https://github.com/codescan-ai/codescan"
+
+[project.scripts]
+guardai = "core.runner:main"
+
+[tool.setuptools.packages.find]
+include = ["core", "core.*"]
