@@ -31,7 +31,7 @@ dev = ["pylint", "black", "isort"]
 Homepage = "https://github.com/codescan-ai/codescan"
 
 [project.scripts]
-guardai = "core.runner:main"
+codescanai = "core.runner:main"
 
 [tool.setuptools.packages.find]
 include = ["core", "core.*"]

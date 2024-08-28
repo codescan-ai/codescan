@@ -36,6 +36,7 @@ It has been designed to enable  seamless integration into CI/CD pipelines like G
 ```bash
 export OPENAI_API_KEY = 'your_openai_api_key'
 ```
+OR 
 
 ```bash
 export GEMINI_API_KEY = 'your_gemini_api_key'
@@ -80,7 +81,7 @@ python3 -m core.runner --provider openai
 To scan code using a custom AI server:
 
 ```bash
-guardai --provider custom --host http://localhost --port 5000 --token your_token --directory path/to/your/code
+codescanai --provider custom --host http://localhost --port 5000 --token your_token --directory path/to/your/code
 ```
 
 ### Supported arguments
