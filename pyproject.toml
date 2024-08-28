@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "codescanai"
-version = "0.1.0"
+version = "0.1.1"
 description = "A CLI tool that scans your codebases for security vulnerabilities powered by powerful AI models."
 readme = "README.md"
 authors = [{ name = "Caleb Abhulimhen", email = "calebabhulimhen@gmail.com" }]

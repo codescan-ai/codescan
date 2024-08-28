@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/codescan-ai/codescan/compare/v0.1.0...v0.1.1) (2024-08-28)
+
+
+### Bug Fixes
+
+* make some changes to the README file ([89ab458](https://github.com/codescan-ai/codescan/commit/89ab45890e7954e7ea339283907877fb148877b1))
+
 ## 0.1.0 (2024-08-28)
 
 
