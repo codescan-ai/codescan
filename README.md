@@ -1,26 +1,36 @@
+[![Release and Publish](https://github.com/codescan-ai/codescan/actions/workflows/release-publish.yml/badge.svg)](https://github.com/codescan-ai/codescan/actions/workflows/release-publish.yml)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/codescan-ai/codescan)
+![GitHub issues](https://img.shields.io/github/issues/codescan-ai/codescan)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/codescan-ai/codescan)
+![GitHub](https://img.shields.io/github/license/codescan-ai/codescan)
+
 # CodeScanAI
 
-CodeScanAI utilizes a variety of AI models, including OpenAI, Gemini, and custom self-hosted AI servers, to scan your codebase for bad development practices. It is currently configure to catch potential security vulnerabilities, but will be extended to other use cases in the future.
+CodeScanAI utilizes a variety of AI models to scan your codebase for bad development practices. It is currently configured to catch potential security vulnerabilities, but will be extended to other use cases in the future. It leverages powerful LLM models to provide suggestions on ways to improve the security of your codebase from external attacks, unauthorized access, etc. The currently supported AI models include:
 
-It has been designed to enable  seamless integration into CI/CD pipelines like GitHub Actions, or can be used via a simple command. CodeScanAI enables developers to automatically detect potential security issues in their code throughout the development process. [Try it out today](#getting-started)!
+- OpenAI,
+- Google Gemini, and
+- custom self-hosted AI servers.
+
+It has also been designed to enable seamless integration into CI/CD pipelines like GitHub Actions, or can be used via a simple CLI command locally. The idea behind CodeScanAI is to enable developers automatically detect potential security issues in their code throughout the development process.
+
+Check out the detailed [demo and setup](https://github.com/codescan-ai/codescanai-demo) and try it out today!
 
 ## Features
 
+- **Flexible Scanning Options:**
+  - **Full Directory Scans:** You can perform a comprehensive security analysis by scanning all files within a directory.
+  - **Changes Only Scan:** Supports the ability to scan only those files that have changed since the last scan.
+  - **PR-Specific Scans:** Only scan the files modified in a specific pull request to optimize the scanning process, reduce overhead and ensure new code changes are up to standard.
+
 - **Support for Multiple AI Models:**
 
-  - **OpenAI Integration:**  Utilize OpenAI's advanced models, such as GPT-4, to scan your code and identify potential security vulnerabilities, OR
-  - **Gemini Integration:** Tap into Gemini's expertise to analyze your code for security risks, OR
-  - **Custom AI Server Integration:** Connect with self-hosted or private AI servers for security scans, offering fully customizable and self-managed AI solutions.
+  CodeScanAI provides support for a range of AI models. It currently supports OpenAI, Google Gemini, and self hosted model. Based on user demands, we can add support for other popular AI models like Claude, Grok, etc.
 
 - **CI/CD Integration:**
 
   - Seamlessly integrate the CLI tool into GitHub Actions for automated security vulnerability scanning on every pull request.
   - Supports targeted scans on specific branches or changes within a repository.
-
-- **Flexible Scanning Options:**
-  - **Full Directory Scans:** Perform a comprehensive security analysis by scanning all files within a directory.
-  - **Changes Only Scan:** Only scan those files that have chnaged since the last scan.
-  - **PR-Specific Scans:** Target files modified in a specific pull request to optimize the scanning process and reduce overhead.
 
 ## Getting Started
 
@@ -28,17 +38,14 @@ It has been designed to enable  seamless integration into CI/CD pipelines like G
 
 - Python 3.10 or higher
 - API keys for the supported AI models:
-  - OpenAI API key
-  - Gemini API key
+  - OpenAI API key, OR
+  - Gemini API key, OR
   - Access to a custom AI server (host, port, and optional token)
 - Set an environment variable for your API key(s).
 
 ```bash
 export OPENAI_API_KEY = 'your_openai_api_key'
-```
-OR 
 
-```bash
 export GEMINI_API_KEY = 'your_gemini_api_key'
 ```
 
@@ -99,12 +106,6 @@ codescanai --provider custom --host http://localhost --port 5000 --token your_to
 | `port`         | <p>Custom AI server port</p>                              | `false`  | `""`           |
 | `token`        | <p>Token for authenticating with the custom AI server</p> | `false`  | `""`           |
 | `endpoint`     | <p>API endpoint for the custom server</p>                 | `false`  | `/api/v1/scan` |
-
-### Supported AI Providers
-
-- **OpenAI:** Utilizes GPT models for in-depth security analysis.
-- **Gemini:** Delivers strong security insights through Gemini's advanced capabilities.
-- **Custom:** Connects with self-hosted or private AI servers for fully customizable solutions.
 
 ### Limitations
 
