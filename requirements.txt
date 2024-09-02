@@ -1,5 +1,5 @@
-openai==1.42.0
+openai==1.43.0
 PyGithub==2.4.0
 requests==2.32.3
 google-generativeai==0.7.2
-ipython==8.26.0
+ipython==8.27.0
