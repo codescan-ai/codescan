@@ -11,7 +11,7 @@ from core.providers.base_ai_provider import BaseAIProvider
 class CustomAIProvider(BaseAIProvider):
     """Provider for interacting with a custom AI server."""
 
-    def __init__(self, model, host, port, token=None, endpoint="/api/v1/scan"):
+    def __init__(self, model, host, port, token=None, endpoint="/api/v1/scan"): # pylint: disable=R0917
         """Initializes the custom AI provider with the given parameters."""
 
         self.model = model
