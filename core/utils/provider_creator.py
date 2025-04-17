@@ -36,4 +36,4 @@ def init_provider(provider, model, host=None, port=None, token=None, endpoint=No
             "model": model if model else DEFAULT_MODELS[provider],
         }
 
-    return PROVIDERS[provider](**client_params)
+    return PROVIDERS[provider](**client_params)  # pylint: disable=R0917
