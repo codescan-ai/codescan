@@ -121,6 +121,9 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# Local idea tracking
+NEW_IDEAS.md
+
 # Environments
 .env
 .venv
