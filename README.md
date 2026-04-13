@@ -6,64 +6,68 @@
 
 # CodeScanAI
 
-CodeScanAI utilizes a variety of AI models to scan your codebase for bad development practices. It is currently configured to catch potential security vulnerabilities, but will be extended to other use cases in the future. It leverages powerful LLM models to provide suggestions on ways to improve the security of your codebase from external attacks, unauthorized access, etc. The currently supported AI models include:
+CodeScanAI utilizes a variety of AI models to scan your codebase for security vulnerabilities. It leverages powerful LLM models to identify risks and provide actionable remediation suggestions. The currently supported AI providers include:
 
 - OpenAI,
 - Google Gemini, and
-- custom self-hosted AI servers.
+- custom self-hosted AI servers (Ollama, etc.).
 
-It has also been designed to enable seamless integration into CI/CD pipelines like GitHub Actions, or can be used via a simple CLI command locally. The idea behind CodeScanAI is to enable developers automatically detect potential security issues in their code throughout the development process.
+It has been designed to integrate seamlessly into CI/CD pipelines like GitHub Actions, or can be used via a simple CLI command locally.
 
 Check out the detailed [demo and setup](https://github.com/codescan-ai/codescanai-demo) and try it out today!
+
+## What's new in v0.1.2
+
+- **Pydantic-AI agent scanner:** Files are now scanned one at a time by a structured AI agent, returning typed `FileScanResult` output instead of a raw markdown string.
+- **Inline PR review comments:** When running a PR scan, findings are posted as inline review comments directly on the relevant line in the diff. Falls back to a regular issue comment for architectural findings with no specific line.
+- **Diff-aware analysis:** When scanning a PR or local git diff, changed lines are highlighted with a `[CHANGED]` marker in the prompt. The agent prioritises those lines while retaining full file context for accurate data flow analysis.
 
 ## Features
 
 - **Flexible Scanning Options:**
-  - **Full Directory Scans:** You can perform a comprehensive security analysis by scanning all files within a directory.
-  - **Changes Only Scan:** Supports the ability to scan only those files that have changed since the last scan.
-  - **PR-Specific Scans:** Only scan the files modified in a specific pull request to optimize the scanning process, reduce overhead and ensure new code changes are up to standard.
+  - **Full Directory Scans:** Comprehensive security analysis across all files in a directory.
+  - **Changes Only Scan:** Scan only files changed since the last commit (`--changes_only`).
+  - **PR-Specific Scans:** Scan only files modified in a specific pull request, with findings posted as inline review comments.
+
+- **Diff-Aware PR Analysis:**
+
+  When scanning a pull request, CodeScanAI fetches the exact lines changed in the diff and annotates them for the agent. This focuses the analysis on new and modified code while preserving full file context to avoid false negatives.
 
 - **Support for Multiple AI Models:**
 
-  CodeScanAI provides support for a range of AI models. It currently supports OpenAI, Google Gemini, and self hosted model. Based on user demands, we can add support for other popular AI models like Claude, Grok, etc.
+  Supports OpenAI, Google Gemini, and any self-hosted OpenAI-compatible server. Support for additional providers can be added on demand.
 
 - **CI/CD Integration:**
 
-  - Seamlessly integrate the CLI tool into GitHub Actions for automated security vulnerability scanning on every pull request.
-  - Supports targeted scans on specific branches or changes within a repository.
+  Integrate into GitHub Actions for automated security scanning on every pull request. Supports targeted scans on specific branches or changes within a repository.
 
 ## Getting Started
 
 ### Prerequisites
 
 - Python 3.10 or higher
-- API keys for the supported AI models:
+- API key for your chosen provider:
   - OpenAI API key, OR
   - Gemini API key, OR
   - Access to a custom AI server (host, port, and optional token)
-- Set an environment variable for your API key(s).
 
 ```bash
-export OPENAI_API_KEY = 'your_openai_api_key'
+export OPENAI_API_KEY='your_openai_api_key'
 
-export GEMINI_API_KEY = 'your_gemini_api_key'
+export GEMINI_API_KEY='your_gemini_api_key'
 ```
 
 ### Installation
 
 #### Option 1: Install via pip
 
-You can install the tool directly from the repository using pip:
-
 ```bash
 pip install codescanai
 ```
 
-This will allow you to use the `codescanai` command directly in your terminal.
+This will make the `codescanai` command available directly in your terminal.
 
 #### Option 2: Clone the Repository
-
-If you prefer to clone the repository and install the dependencies manually:
 
 ```bash
 git clone https://github.com/codescan-ai/codescan.git
@@ -73,59 +77,74 @@ pip install -r requirements.txt
 
 ### Usage
 
-#### Scanning files in  your current directory
+#### Scan all files in your current directory
 
 ```bash
 codescanai --provider openai
 ```
-OR if you're cloning the repository,
+
+Or if you cloned the repository:
+
 ```bash
-python3 -m core.runner --provider openai
+python3 -m core.runner_v2 --provider openai
 ```
 
-#### Scanning with a Custom AI Server
-
-To scan code using a custom AI server:
+#### Scan only changed files (local git diff)
 
 ```bash
-codescanai --provider custom --host <http://localhost> --port <5000> --token <your_token> --directory <path/to/your/code>
+codescanai --provider openai --changes_only
+```
+
+#### Scan a GitHub pull request
+
+```bash
+codescanai --provider openai \
+  --repo owner/repo \
+  --pr_number 42 \
+  --github_token your_github_token
+```
+
+Findings will be posted as inline review comments on the PR.
+
+#### Scan with a Custom AI Server
+
+```bash
+codescanai --provider custom --host http://localhost --port 5000 --token your_token --directory path/to/code
 ```
 
 Using locally running [Ollama](https://github.com/ollama/ollama):
 
 ```bash
-codescanai --provider custom --model <model_name> --host http://localhost --port 11434 --endpoint /api/generate --directory <path/to/your/code>
+codescanai --provider custom --model llama3 --host http://localhost --port 11434 --endpoint /api/generate --directory path/to/code
 ```
 
 ### Supported arguments
 
 | name           | description                                               | required | default        |
 | -------------- | --------------------------------------------------------- | -------- | -------------- |
-| `provider`     | <p>AI provider</p>                                        | `true`   | `""`           |
-| `model`        | <p>AI model to use</p>                                    | `false`  | `""`           |
-| `directory`    | <p>Directory to scan</p>                                  | `false`  | `.`            |
-| `changes_only` | <p>Scan only changed files</p>                            | `false`  | `false`        |
-| `repo`         | <p>GitHub repository</p>                                  | `false`  | `""`           |
-| `pr_number`    | <p>Pull request number</p>                                | `false`  | `""`           |
-| `github_token` | <p>GitHub API token</p>                                   | `false`  | `""`           |
-| `host`         | <p>Custom AI server host</p>                              | `false`  | `""`           |
-| `port`         | <p>Custom AI server port</p>                              | `false`  | `""`           |
-| `token`        | <p>Token for authenticating with the custom AI server</p> | `false`  | `""`           |
-| `endpoint`     | <p>API endpoint for the custom server</p>                 | `false`  | `/api/v1/scan` |
+| `provider`     | AI provider (`openai`, `gemini`, `custom`)                | `true`   | `""`           |
+| `model`        | AI model to use                                           | `false`  | `""`           |
+| `directory`    | Directory to scan                                         | `false`  | `.`            |
+| `changes_only` | Scan only files changed in the local git repo             | `false`  | `false`        |
+| `repo`         | GitHub repository (`owner/repo`)                          | `false`  | `""`           |
+| `pr_number`    | Pull request number                                       | `false`  | `""`           |
+| `github_token` | GitHub API token (required for PR scans)                  | `false`  | `""`           |
+| `host`         | Custom AI server host                                     | `false`  | `""`           |
+| `port`         | Custom AI server port                                     | `false`  | `""`           |
+| `token`        | Token for authenticating with the custom AI server        | `false`  | `""`           |
+| `endpoint`     | API endpoint for the custom server                        | `false`  | `/api/v1/scan` |
 
 ### Limitations
 
-- **Large number of files:** We currently do not support scalable way to scan a large number of files on a single run. Depending on the capacity of your AI Provider, you might run into a `rate_limit_exceeded` error. To do this, you can create a custom solution that breaks down the number of files for each run. 
+- **Rate limits:** Depending on your AI provider's capacity, scanning a large number of files in a single run may hit rate limits. The V2 scanner processes files one at a time, which helps, but you may still need to break up very large directories manually.
 
 ## Future Work
 
-- **Batch Processing:** For the limitation above, a future version will be to implement batch processing for a large number of files.
+- **Caching:** Store results of previously scanned files to reduce API calls and speed up repeat scans.
 
-- **Caching Implementation:** A caching mechanism to store results of previously scanned files, reducing the number of API calls and optimizing performance.
+- **Expanded Git Provider Support:** Currently integrated with GitHub. Future plans include GitLab, Bitbucket, and Azure Repos.
 
-- **Expanded Git Provider Support:** The tool is currently integrated with GitHub for PR-based scanning, future plans include extending support to other Git providers like GitLab, Bitbucket, and Azure Repos.
-
-- **Expanded Development tools:** This will be a plan to expand this tool to be accessible in other development environments. For example, as a VSCode extension.
+- **Expanded Development Tools:** Plans to make CodeScanAI accessible as a VSCode extension and in other development environments.
 
 ## Contributing
 
