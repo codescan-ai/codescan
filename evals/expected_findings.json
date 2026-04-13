@@ -1,0 +1,198 @@
+{
+  "_comment": "Ground-truth vulnerability manifest for eval fixtures. Each finding has a 'tier': 'standard' (expected from any model) or 'advanced' (only required when running gpt-4o-class models). When running a standard-tier model, advanced findings are treated as optional bonuses. 'threshold' is the minimum fraction of tier-appropriate required findings that must be detected to pass.",
+  "threshold": 0.80,
+  "model_tiers": {
+    "standard": ["gpt-4o-mini", "gemini-1.5-flash", "gemini-flash", "custom-model"],
+    "advanced": ["gpt-4o", "gpt-4-turbo", "gpt-4", "gemini-1.5-pro", "gemini-pro", "claude"]
+  },
+  "fixtures": {
+    "web_api.py": {
+      "required": [
+        {
+          "id": "web_api-1",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["sql injection", "sql"],
+          "line_hint": 37,
+          "severity": "Critical",
+          "note": "Unsanitised user input concatenated into SQL query in search_users()"
+        },
+        {
+          "id": "web_api-2",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["xss", "cross-site scripting", "stored xss"],
+          "line_hint": 53,
+          "severity": "High",
+          "note": "Raw HTML/JS bio stored and returned without sanitisation in update_profile()"
+        },
+        {
+          "id": "web_api-3",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["open redirect", "redirect"],
+          "line_hint": 78,
+          "severity": "Medium",
+          "note": "next_url from request redirected without validation in login_callback()"
+        }
+      ],
+      "optional": [
+        {
+          "id": "web_api-4",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["ssrf", "server-side request forgery"],
+          "line_hint": 68,
+          "severity": "High",
+          "note": "Arbitrary URL fetched server-side in proxy_image() — SSRF"
+        }
+      ]
+    },
+    "auth_service.py": {
+      "required": [
+        {
+          "id": "auth-1",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["hardcoded secret", "hardcoded", "secret", "jwt secret"],
+          "line_hint": 18,
+          "severity": "Critical",
+          "note": "JWT_SECRET embedded in source code"
+        },
+        {
+          "id": "auth-2",
+          "tier": "advanced",
+          "vulnerability_type_keywords": ["algorithm confusion", "jwt", "algorithm"],
+          "line_hint": 46,
+          "severity": "High",
+          "note": "jwt.decode accepts both HS256 and RS256 — algorithm confusion attack"
+        },
+        {
+          "id": "auth-3",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["weak cryptography", "md5", "weak hash", "predictable token"],
+          "line_hint": 57,
+          "severity": "High",
+          "note": "MD5 used to generate password reset token — predictable and broken"
+        },
+        {
+          "id": "auth-4",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["sensitive data", "logging", "password", "log"],
+          "line_hint": 98,
+          "severity": "High",
+          "note": "Plaintext password written to logs in register_user()"
+        }
+      ],
+      "optional": [
+        {
+          "id": "auth-5",
+          "tier": "advanced",
+          "vulnerability_type_keywords": ["timing attack", "timing", "comparison"],
+          "line_hint": 72,
+          "severity": "Medium",
+          "note": "Non-constant-time string comparison in validate_api_key()"
+        }
+      ]
+    },
+    "file_handler.py": {
+      "required": [
+        {
+          "id": "file-1",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["path traversal", "directory traversal"],
+          "line_hint": 40,
+          "severity": "Critical",
+          "note": "Unsanitised filename joined onto upload dir in save_upload()"
+        },
+        {
+          "id": "file-2",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["command injection", "os.system", "shell injection"],
+          "line_hint": 56,
+          "severity": "Critical",
+          "note": "Unsanitised filename interpolated into os.system() shell command in generate_thumbnail()"
+        },
+        {
+          "id": "file-3",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["insecure deserialization", "pickle", "deserialization"],
+          "line_hint": 76,
+          "severity": "Critical",
+          "note": "pickle.loads on untrusted input in load_user_session()"
+        },
+        {
+          "id": "file-4",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["zip slip", "tar slip", "path traversal", "archive"],
+          "line_hint": 87,
+          "severity": "High",
+          "note": "tarfile.extractall without path validation — tar slip in extract_archive()"
+        }
+      ],
+      "optional": []
+    },
+    "mobile_backend.py": {
+      "required": [
+        {
+          "id": "mobile-1",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["xxe", "xml external entity", "xml"],
+          "line_hint": 56,
+          "severity": "Critical",
+          "note": "lxml parses XML with external entity resolution enabled in import_user_preferences()"
+        },
+        {
+          "id": "mobile-2",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["idor", "insecure direct object reference", "authorization"],
+          "line_hint": 70,
+          "severity": "High",
+          "note": "No ownership check in get_notification_settings() — any user can read another's settings"
+        },
+        {
+          "id": "mobile-3",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["mass assignment", "mass assignment", "privilege escalation"],
+          "line_hint": 82,
+          "severity": "High",
+          "note": "All request body fields applied to user record without allowlist in update_user_settings()"
+        }
+      ],
+      "optional": []
+    },
+    "data_pipeline.py": {
+      "required": [
+        {
+          "id": "pipeline-1",
+          "tier": "standard",
+          "vulnerability_type_keywords": ["hardcoded", "credential", "password", "secret"],
+          "line_hint": 24,
+          "severity": "Critical",
+          "note": "Production DB password hardcoded in DB_CONFIG dict"
+        },
+        {
+          "id": "pipeline-2",
+          "tier": "advanced",
+          "vulnerability_type_keywords": ["yaml", "deserialization", "code execution"],
+          "line_hint": 49,
+          "severity": "High",
+          "note": "yaml.load() without SafeLoader allows arbitrary code execution in load_pipeline_config()"
+        },
+        {
+          "id": "pipeline-3",
+          "tier": "advanced",
+          "vulnerability_type_keywords": ["race condition", "toctou", "thread", "concurrency"],
+          "line_hint": 75,
+          "severity": "Medium",
+          "note": "Shared list _batch_results modified without lock in worker_ingest()"
+        }
+      ],
+      "optional": [
+        {
+          "id": "pipeline-4",
+          "tier": "advanced",
+          "vulnerability_type_keywords": ["tempfile", "toctou", "mktemp", "symlink"],
+          "line_hint": 92,
+          "severity": "Medium",
+          "note": "tempfile.mktemp() has TOCTOU window — use mkstemp() instead"
+        }
+      ]
+    }
+  }
+}
