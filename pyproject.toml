@@ -33,9 +33,7 @@ dev = ["pylint", "black", "isort"]
 Homepage = "https://github.com/codescan-ai/codescan"
 
 [project.scripts]
-# Flip the comment below to use the V2 Pydantic-AI agent codepath
-codescanai = "core.runner:main"
-# codescanai = "core.runner_v2:main"
+codescanai = "core.runner_v2:main"
 
 [tool.setuptools.packages.find]
 include = ["core", "core.*"]

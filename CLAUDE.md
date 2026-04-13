@@ -74,7 +74,7 @@ There are two scanner implementations that share the same CLI argument surface (
 
 2. **V2 (`core/runner_v2.py` → `core/code_scanner/agent_scanner.py`)**: Iterates file-by-file, runs a Pydantic-AI `Agent` synchronously on each, and streams structured `FileScanResult` output to stdout. Also supports posting inline PR review comments via `GithubIntegration`. This is the more feature-rich path.
 
-The active entrypoint is controlled in `pyproject.toml` under `[project.scripts]`. Currently V1 (`core.runner:main`) is active; V2 can be enabled by swapping the comment.
+The active entrypoint is `core.runner_v2:main` (V2), set in `pyproject.toml` under `[project.scripts]`.
 
 ### Provider abstraction (V1 only)
 
