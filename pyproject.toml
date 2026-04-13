@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "codescanai"
-version = "0.1.1"
+version = "0.2.0"
 description = "A CLI tool that scans your codebases for security vulnerabilities powered by powerful AI models."
 readme = "README.md"
 authors = [{ name = "Caleb Abhulimhen", email = "calebabhulimhen@gmail.com" }]
@@ -20,7 +20,9 @@ dependencies = [
     "PyGithub",
     "requests",
     "google-generativeai",
-    "ipython"
+    "ipython",
+    "pydantic",
+    "pydantic-ai"
 ]
 requires-python = ">=3.10"
 
@@ -31,7 +33,7 @@ dev = ["pylint", "black", "isort"]
 Homepage = "https://github.com/codescan-ai/codescan"
 
 [project.scripts]
-codescanai = "core.runner:main"
+codescanai = "core.runner_v2:main"
 
 [tool.setuptools.packages.find]
 include = ["core", "core.*"]
