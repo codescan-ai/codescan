@@ -112,8 +112,8 @@ class AgentScanner:
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
-        except Exception:  # pylint: disable=broad-exception-caught
-            logging.warning("Skipping %s: could not read file.", file_path)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logging.warning("Skipping %s: %s", file_path, e)
             return
 
         if not content.strip():
@@ -158,5 +158,5 @@ class AgentScanner:
             else:
                 logging.info("No vulnerabilities found in %s.", display_name)
 
-        except Exception:  # pylint: disable=broad-exception-caught
-            logging.error("Error scanning %s.", display_name)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logging.error("Error scanning %s: %s", display_name, e)
