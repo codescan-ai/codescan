@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.2](https://github.com/codescan-ai/codescan/compare/v0.1.1...v0.1.2) (2026-04-13)
+
+
+### Documentation
+
+* clarify and improve custom AI server examples ([#43](https://github.com/codescan-ai/codescan/issues/43)) ([a461cd1](https://github.com/codescan-ai/codescan/commit/a461cd12b3a8ee38389c547c8f70141f099ea249))
+* update some section in the README and retrive the workflow  badges ([bd59433](https://github.com/codescan-ai/codescan/commit/bd594331965d2810d14e6678a3f163f1e9a56ab6))
+* update some sections in the README and retrieve the workflow badges ([0868d21](https://github.com/codescan-ai/codescan/commit/0868d21cccf85c3514cdea9c7a49360c831c1e83))
+
 ## [0.1.1](https://github.com/codescan-ai/codescan/compare/v0.1.0...v0.1.1) (2024-08-28)
 
 
