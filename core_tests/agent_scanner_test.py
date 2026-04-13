@@ -254,7 +254,9 @@ class TestAgentScanner(unittest.TestCase):
             scanner._scan_changes()
 
         mock_local_lines.assert_called_once_with("/repo", "a.py")
-        scanner._scan_single_file.assert_called_once_with("/repo/a.py", display_name="a.py", changed_lines={3, 5})
+        scanner._scan_single_file.assert_called_once_with(
+            os.path.join("/repo", "a.py"), display_name="a.py", changed_lines={3, 5}
+        )
 
     @patch("core.code_scanner.agent_scanner.GithubIntegration")
     @patch("core.code_scanner.agent_scanner.create_agent")
@@ -270,7 +272,9 @@ class TestAgentScanner(unittest.TestCase):
              patch("core.code_scanner.agent_scanner.get_pr_changed_line_numbers", return_value={"b.py": {10, 11}}):
             scanner._scan_changes()
 
-        scanner._scan_single_file.assert_called_once_with("/repo/b.py", display_name="b.py", changed_lines={10, 11})
+        scanner._scan_single_file.assert_called_once_with(
+            os.path.join("/repo", "b.py"), display_name="b.py", changed_lines={10, 11}
+        )
 
     @patch("core.code_scanner.agent_scanner.create_agent")
     def test__scanSingleFile__handlesAgentException(self, mock_create_agent):
