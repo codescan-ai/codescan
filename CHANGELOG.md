@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.3](https://github.com/codescan-ai/codescan/compare/v0.1.2...v0.1.3) (2026-06-15)
+
+
+### Bug Fixes
+
+* set dummy OPENAI_API_KEY fallback for custom providers and correct Ollama endpoint ([#60](https://github.com/codescan-ai/codescan/issues/60)) ([c5defc7](https://github.com/codescan-ai/codescan/commit/c5defc72316c1cabbdbffcafa1cbbf6a1f385ca8)), closes [#59](https://github.com/codescan-ai/codescan/issues/59)
+
+
+### Documentation
+
+* update README for v0.1.2 with V2 agent scanner and diff-aware analysis ([55177b9](https://github.com/codescan-ai/codescan/commit/55177b90229bba072318d43d9d2f456cb8965c71))
+
 ## [0.1.2](https://github.com/codescan-ai/codescan/compare/v0.1.1...v0.1.2) (2026-04-13)
 
 
