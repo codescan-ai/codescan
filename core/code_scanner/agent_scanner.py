@@ -41,8 +41,9 @@ class AgentScanner:
             if args.endpoint:
                 host_url += args.endpoint
             os.environ["OPENAI_BASE_URL"] = host_url
-            if args.token:
-                os.environ["OPENAI_API_KEY"] = args.token
+            # The OpenAI SDK requires a non-empty API key even for local servers that
+            # don't authenticate. Fall back to a dummy value when no token is supplied.
+            os.environ["OPENAI_API_KEY"] = args.token if args.token else "dummy"
 
         self.agent = create_agent(
             model_str=model_str,
