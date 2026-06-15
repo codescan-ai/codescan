@@ -115,7 +115,7 @@ codescanai --provider custom --host http://localhost --port 5000 --token your_to
 Using locally running [Ollama](https://github.com/ollama/ollama):
 
 ```bash
-codescanai --provider custom --model llama3 --host http://localhost --port 11434 --endpoint /api/generate --directory path/to/code
+codescanai --provider custom --model llama3 --host http://localhost --port 11434 --endpoint /v1 --directory path/to/code
 ```
 
 ### Supported arguments
