@@ -54,6 +54,7 @@ def get_pydantic_ai_model(provider: str, model: Optional[str]) -> str:
 def create_agent(
     model_str: str, system_prompt: str, output_type: Type[BaseModel] = FileScanResult
 ) -> Agent:
+    """Creates and returns a Pydantic-AI Agent configured with the given model, prompt, and output schema."""
     return Agent(
         model_str,
         output_type=output_type,
