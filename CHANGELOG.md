@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/codescan-ai/codescan/compare/v0.1.3...v0.1.4) (2026-08-17)
+
+
+### Bug Fixes
+
+* migrate pydantic-ai Agent API from result_type to output_type ([#62](https://github.com/codescan-ai/codescan/issues/62)) ([efc0ae2](https://github.com/codescan-ai/codescan/commit/efc0ae24b08278f9bddaeb7d65972001dac0e032)), closes [#61](https://github.com/codescan-ai/codescan/issues/61)
+
 ## [0.1.3](https://github.com/codescan-ai/codescan/compare/v0.1.2...v0.1.3) (2026-06-15)
 
 
