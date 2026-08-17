@@ -52,16 +52,12 @@ def get_pydantic_ai_model(provider: str, model: Optional[str]) -> str:
 
 
 def create_agent(
-    model_str: str, system_prompt: str, result_type: Type[BaseModel] = FileScanResult
+    model_str: str, system_prompt: str, output_type: Type[BaseModel] = FileScanResult
 ) -> Agent:
-    """
-    Creates and returns a Pydantic-AI Agent configured for a custom, laser-focused task.
-    By passing different `system_prompt` and `result_type` schemas, you can deploy
-    multiple types of agents.
-    """
+    """Creates and returns a Pydantic-AI Agent configured with the given model, prompt, and output schema."""
     return Agent(
         model_str,
-        result_type=result_type,
+        output_type=output_type,
         system_prompt=system_prompt,
     )
 

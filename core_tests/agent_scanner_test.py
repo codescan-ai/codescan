@@ -205,7 +205,7 @@ class TestAgentScanner(unittest.TestCase):
             vulnerability_type="SQL Injection",
         )
         mock_result = MagicMock()
-        mock_result.data = FileScanResult(vulnerabilities=[vuln])
+        mock_result.output = FileScanResult(vulnerabilities=[vuln])
         scanner.agent.run_sync = MagicMock(return_value=mock_result)
 
         with patch("os.path.isfile", return_value=True), \
@@ -230,7 +230,7 @@ class TestAgentScanner(unittest.TestCase):
             vulnerability_type="Weak Cryptography",
         )
         mock_result = MagicMock()
-        mock_result.data = FileScanResult(vulnerabilities=[vuln])
+        mock_result.output = FileScanResult(vulnerabilities=[vuln])
         scanner.agent.run_sync = MagicMock(return_value=mock_result)
 
         with patch("os.path.isfile", return_value=True), \
