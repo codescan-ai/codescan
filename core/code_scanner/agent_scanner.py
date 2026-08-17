@@ -48,7 +48,7 @@ class AgentScanner:
         self.agent = create_agent(
             model_str=model_str,
             system_prompt=SECURITY_AGENT_PROMPT,
-            result_type=FileScanResult,
+            output_type=FileScanResult,
         )
         self.github_integration = (
             GithubIntegration(args)
@@ -132,7 +132,7 @@ class AgentScanner:
 
         try:
             result = self.agent.run_sync(f"File: {display_name}\n\n{numbered_content}")
-            scan_result = result.data
+            scan_result = result.output
 
             if scan_result.vulnerabilities:
                 print(f"\n--- Vulnerabilities found in {display_name} ---")
