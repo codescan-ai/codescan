@@ -80,6 +80,10 @@ class TestAgentScanner(unittest.TestCase):
             repo=None,
             pr_number=None,
             github_token=None,
+            prompt_file=None,
+            prompt_preset="security",
+            max_file_bytes=262144,
+            exclude_dirs=None,
         )
         defaults.update(kwargs)
         return MagicMock(**defaults)

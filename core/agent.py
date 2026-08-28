@@ -1,8 +1,14 @@
 """
-Defines the structured output types, agent factory, and pre-configured system prompts
+Defines the structured output types, agent factory, and system-prompt resolution
 used by the V2 Pydantic-AI scanner.
+
+Prompts live as Markdown under `core/prompts/`, not as Python string constants.
+This keeps prompt iteration diffable and lets users override them at the CLI
+without touching source. See `resolve_system_prompt` for the lookup order.
 """
 
+from importlib import resources
+from pathlib import Path
 from typing import Optional, Type
 
 from pydantic import BaseModel, Field
@@ -62,43 +68,49 @@ def create_agent(
     )
 
 
-# --- Define pre-configured Agent Prompts for laser-focused tasks ---
+# --- System prompt resolution ---------------------------------------------------
 
-SECURITY_AGENT_PROMPT = (
-    "You are an expert in software security analysis, adept at identifying and explaining "
-    "potential vulnerabilities in code. "
-    "You will be given complete code snippets from various applications. "
-    "EVERY line of the source code is prefixed with its exact line number "
-    "(e.g. `14: def foo():`). "
-    "Your task is to analyze the provided code, pinpoint potential security risks, "
-    "and offer clear suggestions for enhancing the application's security posture. "
-    "Focus on the critical issues that could impact the overall security of the application. "
-    "You MUST be exhaustive. Carefully audit the entire script from top to bottom "
-    "and return EVERY vulnerability you find. Do not stop at the first issue. "
-    "If any are found, use the explicitly provided line numbers to pinpoint the defect "
-    "where possible. For architectural or multi-line issues, you may omit the line number. "
-    "Also, strictly provide an actionable `remediation` that makes suggestions on how to "
-    "rewrite or fix the code securely. "
-    "If no vulnerabilities are found, return an empty list. "
-    "When scanning a pull request or diff, some lines will be marked with `[CHANGED]` "
-    "after the line number (e.g. `14: [CHANGED] def foo():`). "
-    "These lines are newly added or modified in the change under review. "
-    "Prioritise your analysis on `[CHANGED]` lines, but use the full file context — "
-    "imports, surrounding functions, class definitions, and data flow — to assess "
-    "whether those changes introduce or worsen a vulnerability."
-)
+PROMPT_PRESETS = ("security", "performance", "clean_code")
+DEFAULT_PROMPT_PRESET = "security"
 
-PERFORMANCE_AGENT_PROMPT = (
-    "You are a Senior Staff Software Engineer laser-focused on performance optimization. "
-    "Analyze the following code for memory leaks, O(N^2) bottlenecks, or CPU inefficiencies. "
-    "Pinpoint exact line numbers and return a list of performance issues. "
-    "If none are found, return an empty list."
-)
 
-CLEAN_CODE_AGENT_PROMPT = (
-    "You are an expert in code refactoring and Clean Code methodologies. "
-    "Analyze the code for anti-patterns, confusing variable names, massive functions, "
-    "or high cyclomatic complexity. "
-    "Pinpoint exact line numbers and return a list of maintainability issues. "
-    "If the code is perfectly clean, return an empty list."
-)
+def _load_preset(name: str) -> str:
+    """Read a bundled preset prompt from `core/prompts/<name>.md`."""
+    if name not in PROMPT_PRESETS:
+        raise ValueError(
+            f"Unknown prompt preset '{name}'. Valid presets: {', '.join(PROMPT_PRESETS)}."
+        )
+    text = resources.files("core.prompts").joinpath(f"{name}.md").read_text(encoding="utf-8")
+    text = text.strip()
+    if not text:
+        raise ValueError(f"Bundled prompt preset '{name}' is empty.")
+    return text
+
+
+def resolve_system_prompt(
+    prompt_file: Optional[str] = None,
+    preset: str = DEFAULT_PROMPT_PRESET,
+) -> str:
+    """
+    Return the system prompt to use.
+
+    Order of precedence:
+      1. `prompt_file` — an explicit path to a text/markdown file on disk.
+      2. `preset` — one of the bundled prompts in `core/prompts/`.
+    """
+    if prompt_file:
+        path = Path(prompt_file).expanduser()
+        if not path.is_file():
+            raise FileNotFoundError(f"Prompt file not found: {path}")
+        text = path.read_text(encoding="utf-8").strip()
+        if not text:
+            raise ValueError(f"Prompt file is empty: {path}")
+        return text
+    return _load_preset(preset)
+
+
+# Convenience module-level constants for callers that want the built-ins directly
+# (e.g. evals, tests).
+SECURITY_AGENT_PROMPT = _load_preset("security")
+PERFORMANCE_AGENT_PROMPT = _load_preset("performance")
+CLEAN_CODE_AGENT_PROMPT = _load_preset("clean_code")

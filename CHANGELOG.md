@@ -1,5 +1,36 @@
 # Changelog
 
+## Unreleased
+
+### Features
+
+* **Externalized system prompts.** The three built-in prompts (`security`,
+  `performance`, `clean_code`) now live as Markdown under `core/prompts/`
+  instead of being Python string constants. Iterate on prompts without
+  touching source.
+* **`--prompt-file PATH`** — supply a custom system prompt from disk,
+  overriding the built-in.
+* **`--prompt-preset {security,performance,clean_code}`** — select which
+  built-in prompt to use when `--prompt-file` is not supplied. Defaults
+  to `security`.
+* **Full-directory scan hygiene.** `_scan_files` now skips common junk
+  directories (`.git`, `node_modules`, `__pycache__`, `.venv`, `dist`, ...)
+  and files whose extension isn't a recognised source-code type. Adds a
+  256 KiB per-file cap to keep large generated files off the wire.
+* **`--exclude-dir NAME`** (repeatable) and **`--max-file-bytes N`** to
+  override the defaults.
+
+### Bug Fixes
+
+* **Security prompt tightened.** Added rules 6–9 targeting the classes of
+  false positive that surfaced in real-world scans: unverified claims
+  about external functions, language-level-guarantee violations, missing
+  taint provenance, and speculative-connective hedging ("if the value
+  is ever ...", "may return a string", etc.). Fixed a stale "five checks"
+  reference — there are now nine.
+* Skip binary/non-UTF-8 files quietly instead of catching `Exception`
+  and logging a warning.
+
 ## [0.1.4](https://github.com/codescan-ai/codescan/compare/v0.1.3...v0.1.4) (2026-08-17)
 
 

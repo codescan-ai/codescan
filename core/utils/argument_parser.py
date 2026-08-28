@@ -4,6 +4,8 @@ This module provides util methods for understanding and parsing the arguments se
 
 import argparse
 
+from core.agent import DEFAULT_PROMPT_PRESET, PROMPT_PRESETS
+
 
 def parse_arguments():
     """
@@ -57,6 +59,49 @@ def parse_arguments():
         type=str,
         default="/api/v1/scan",
         help="API endpoint for the custom server",
+    )
+
+    # Prompt selection
+    parser.add_argument(
+        "--prompt-file",
+        dest="prompt_file",
+        type=str,
+        default=None,
+        help=(
+            "Path to a text/markdown file containing the system prompt. "
+            "Overrides --prompt-preset when supplied."
+        ),
+    )
+    parser.add_argument(
+        "--prompt-preset",
+        dest="prompt_preset",
+        type=str,
+        default=DEFAULT_PROMPT_PRESET,
+        choices=list(PROMPT_PRESETS),
+        help="Which built-in prompt to use when --prompt-file is not supplied.",
+    )
+
+    # File-filtering knobs for full-directory scans
+    parser.add_argument(
+        "--max-file-bytes",
+        dest="max_file_bytes",
+        type=int,
+        default=262144,
+        help=(
+            "Skip files larger than this many bytes when doing a full-directory "
+            "scan. Default: 262144 (256 KiB). Set to 0 to disable the cap."
+        ),
+    )
+    parser.add_argument(
+        "--exclude-dir",
+        dest="exclude_dirs",
+        action="append",
+        default=None,
+        help=(
+            "Directory name to skip during a full-directory scan. May be given "
+            "multiple times. If omitted, a built-in list of common junk "
+            "directories (.git, node_modules, __pycache__, ...) is used."
+        ),
     )
 
     return parser.parse_args()

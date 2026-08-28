@@ -2,3 +2,4 @@ include requirements.txt
 include README.md
 include LICENSE
 include CHANGELOG
+recursive-include core/prompts *.md
