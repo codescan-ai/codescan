@@ -37,3 +37,6 @@ codescanai = "core.runner_v2:main"
 
 [tool.setuptools.packages.find]
 include = ["core", "core.*"]
+
+[tool.setuptools.package-data]
+"core.prompts" = ["*.md"]

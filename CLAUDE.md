@@ -87,7 +87,7 @@ The active entrypoint is `core.runner_v2:main` (V2), set in `pyproject.toml` und
 
 ### Pydantic-AI agent (V2 only)
 
-`core/agent.py` defines structured output types (`Vulnerability`, `FileScanResult`) and factory functions. It also holds pre-configured system prompts for different scan modes: `SECURITY_AGENT_PROMPT`, `PERFORMANCE_AGENT_PROMPT`, `CLEAN_CODE_AGENT_PROMPT`. Custom providers route through the OpenAI-compatible interface via `OPENAI_BASE_URL`.
+`core/agent.py` defines structured output types (`Vulnerability`, `FileScanResult`) and factory functions. System prompts live as Markdown under `core/prompts/` (`security.md`, `performance.md`, `clean_code.md`) and are loaded via `resolve_system_prompt(prompt_file, preset)`. CLI callers pick with `--prompt-file` (highest precedence) or `--prompt-preset` (default `security`). The old module-level constants `SECURITY_AGENT_PROMPT`, `PERFORMANCE_AGENT_PROMPT`, `CLEAN_CODE_AGENT_PROMPT` still exist as convenience re-exports of the file contents. Custom providers route through the OpenAI-compatible interface via `OPENAI_BASE_URL`.
 
 ### GitHub integration
 

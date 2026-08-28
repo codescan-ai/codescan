@@ -118,6 +118,20 @@ Using locally running [Ollama](https://github.com/ollama/ollama):
 codescanai --provider custom --model llama3 --host http://localhost --port 11434 --endpoint /v1 --directory path/to/code
 ```
 
+#### Use a custom system prompt
+
+The three built-in prompts (`security`, `performance`, `clean_code`) ship as
+Markdown files under `core/prompts/`. Iterate on them in place, or supply your
+own with `--prompt-file`:
+
+```bash
+# Use the built-in performance prompt instead of the default security one
+codescanai --provider openai --prompt-preset performance
+
+# Override with a fully custom prompt
+codescanai --provider openai --prompt-file ./my_prompt.md
+```
+
 ### Supported arguments
 
 | name           | description                                               | required | default        |
@@ -133,6 +147,10 @@ codescanai --provider custom --model llama3 --host http://localhost --port 11434
 | `port`         | Custom AI server port                                     | `false`  | `""`           |
 | `token`        | Token for authenticating with the custom AI server        | `false`  | `""`           |
 | `endpoint`     | API endpoint for the custom server                        | `false`  | `/api/v1/scan` |
+| `prompt-file`  | Path to a custom system prompt file (overrides preset)    | `false`  | `""`           |
+| `prompt-preset`| Built-in prompt: `security`, `performance`, `clean_code`  | `false`  | `security`     |
+| `max-file-bytes` | Skip files larger than this many bytes (0 = no cap)     | `false`  | `262144`       |
+| `exclude-dir`  | Directory name to skip (repeatable)                       | `false`  | *sensible defaults* |
 
 ### Limitations
 
